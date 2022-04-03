@@ -1,0 +1,52 @@
+package {{domain}}.queries;
+
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.SqlObjectPlugin;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+
+import {{domain}}.domain.{{classname}};
+
+/**
+ * Implement the test case for the DatabaseQueries
+ * @author Wilson Garay
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class {{classname}}QueriesTest {
+
+  /**database connection*/
+  private final Jdbi  DB = Jdbi.create("");
+
+  /**queries for database*/
+  private {{classname}}Queries query = null;
+  
+  /**id the work*/
+  private static Long id = 0L;
+
+  /**
+   * initial queries for test
+   */
+  @Before
+  public void initial() {
+    DB.installPlugin(new SqlObjectPlugin());
+    query = DB.onDemand({{classname}}.class);
+  }
+
+  /**
+   * close operation
+   */
+  @After
+  public void ending() {
+    query = null;
+  }
+  
+__textTest__  
+}

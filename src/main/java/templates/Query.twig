@@ -1,0 +1,7 @@
+ /**
+  * not document method
+ */
+ {% if(tx) %}@SqlUpdate("{{sentence}}")
+ {% if(txi) %}@GetGeneratedKeys{% endif %}{% else %}@SqlQuery("{{sentence}}"){% endif %}
+ public {{output}} {{nameservice}}({{params}});
+

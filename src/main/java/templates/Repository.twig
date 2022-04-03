@@ -1,0 +1,24 @@
+package {{domain}}.queries;
+
+import java.util.List;
+
+import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
+import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
+import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
+
+import {{domain}}.domain.{{classname}};
+import {{domain}}.mapper.{{classname}}Mapper;
+
+/**
+ Queries class for {{database}} tables
+ @author {{author}}  
+ @version 1.0.0
+ @since 1.0.0
+*/
+@RegisterRowMapper({{classname}}Mapper.class)
+public interface {{classname}}Queries{
+
+__textQueries__
+}

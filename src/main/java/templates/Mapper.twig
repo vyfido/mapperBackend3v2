@@ -1,0 +1,32 @@
+package {{domain}}.mapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.jdbi.v3.core.mapper.RowMapper;
+import org.jdbi.v3.core.statement.StatementContext;
+
+import {{domain}}.domain.{{classname}};
+
+/**
+ Class that related the {{ classname }} with {{classname}}RowMapper 
+ @author {{author}} 
+ @version 1.0.0
+ @since 1.0.0
+*/
+public class {{classname}}Mapper implements RowMapper<{{classname}}>{
+
+	/**
+	 * (non-Javadoc)
+	 * @see org.jdbi.v3.core.mapper.RowMapper
+	 */
+	@Override
+	public {{classname}} map(ResultSet rs, StatementContext ctx) throws SQLException {
+          {{classname}} {{nameinstance}} = new {{classname}}();
+          
+          {% for key, value in fields %}{{nameinstance}}.{{key}}({{value}});
+          {% endfor %} 
+          return {{nameinstance}};
+    }
+    
+}

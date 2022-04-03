@@ -1,0 +1,30 @@
+package {{domain}}.domain;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ {{classname}} domain class
+ @author {{author}} 
+ @version 1.0.0
+ @since 1.0.0
+*/
+@ToString
+@EqualsAndHashCode
+public class {{classname}} {
+  {% for key, value in fields %}
+  /**field {{key}}*/
+  @Getter @Setter
+ {{value}} {{key}};
+  {% endfor %} 
+
+  /**
+   constructor
+  */
+  public {{classname}}(){
+  
+  }
+  
+}
