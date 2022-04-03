@@ -1,0 +1,235 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.vyfido</groupId>
+	<artifactId>mapperback</artifactId>
+	<version>2.0.0</version>
+	
+	<name>Mapper Jdbi3</name>
+	<description>Implement the generation the class for project based in jdbi 3</description>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+		<compile.build>${maven.build.timestamp}</compile.build>
+		<app.company>Vyfido Inc</app.company>
+		<app.module>Backend Generator for JDBI 3</app.module>
+		<app.internalversion>2.0.0</app.internalversion>
+		<main.class>com.experimental.app.MainApp</main.class>
+	</properties>
+
+	<dependencies>
+	
+		<dependency>
+			<groupId>org.jtwig</groupId>
+			<artifactId>jtwig-core</artifactId>
+			<version>5.87.0.RELEASE</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>2.13.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.22</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+	
+	<build>
+		<finalName>${project.name}-${project.version}</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>${main.class}</mainClass>
+						</manifest>
+						<manifest-Entries>
+							<Company>${app.company}</Company>
+							<Specification-Title>${app.module}</Specification-Title>
+							<Specification-Version>${app.internalversion}</Specification-Version>
+							<Specification-Vendor>${app.company}</Specification-Vendor>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Implementation-Vendor>${app.company}</Implementation-Vendor>
+							<Implementation-Compilation>${compile.build}</Implementation-Compilation>
+						</manifest-Entries>
+					</archive>
+					<excludes>
+					    <directory>src/main/resources/specification</directory>
+					</excludes>
+				</configuration>
+
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${project.build.directory}/lib</outputDirectory>
+					<excludeTransitive>false</excludeTransitive>
+					<stripVersion>false</stripVersion>
+					<excludeGroupIds>junit,net.sourceforge.htmlunit,org.mozilla</excludeGroupIds>
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<windowtitle>API :: ${project.name}-${project.version}</windowtitle>
+					<show>private</show>
+					<links>
+						<link>http://localhost:4030/</link>
+					</links>
+					<bottom>
+                    <![CDATA[<br/><i>${app.company} Copyright &#169; 2020, All Rights Reserved..</i>]]>
+					</bottom>
+					<doctitle>
+  	                <![CDATA[
+  	                   <font size=6><b>${project.name}</b></font><br><font size=2><b>${project.version}</b></font><br/>
+  	                ]]>
+					</doctitle>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.name}Unique-${project.version}</finalName>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifest-Entries>
+										<Main-Class>${main.class}</Main-Class>
+										<Company>${app.company}</Company>
+										<Specification-Title>${app.module}</Specification-Title>
+										<Specification-Version>${app.internalversion}</Specification-Version>
+										<Specification-Vendor>${app.company}</Specification-Vendor>
+										<Implementation-Version>${project.version}</Implementation-Version>
+										<Implementation-Vendor>${app.company}</Implementation-Vendor>
+										<Implementation-Compilation>${compile.build}</Implementation-Compilation>
+									</manifest-Entries>
+								</transformer>
+							</transformers>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/license/**</exclude>
+										<exclude>META-INF/*</exclude>
+										<exclude>META-INF/maven/**</exclude>
+										<exclude>META-INF/versions/**</exclude>
+										<exclude>META-INF/services/**</exclude>
+										<exclude>META-INF/plexus/**</exclude>
+										<exclude>META-INF/maven/**</exclude>
+										<exclude>META-INF/org/**</exclude>
+										<exclude>LICENSE</exclude>
+										<exclude>NOTICE</exclude>
+										<exclude>DEPENDENCES</exclude>
+										<exclude>/*.txt</exclude>
+										<exclude>config.properties</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.2</version>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+							<file>target/${project.name}-${project.version}.jar</file>
+							<pomFile>pom.xml</pomFile>
+							<sources>target/${project.name}-${project.version}-sources.jar</sources>
+							<javadoc>target/${project.name}-${project.version}-javadoc.jar</javadoc>
+							<localRepositoryPath>/mnt/veracrypt2/Repository/Core7</localRepositoryPath>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+
+</project>
