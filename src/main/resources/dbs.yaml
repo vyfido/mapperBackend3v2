@@ -1,0 +1,49 @@
+# define the general configuration
+configuration:
+  outputdir: C:\Users\Fernando\Desktop\tesr
+  domain: com.vyfido.dbfit
+  name: Dbs
+# describe the information the table, for domain and mapper
+# the type of data use the java type  
+domain:
+  fields: 
+    - field: database_id
+      type: Long
+    - field: database_alias
+      type: String
+    - field: database_url
+      type: String
+    - field: database_user
+      type: String
+    - field: database_pass
+      type: String
+    - field: database_execution
+      type: Integer      
+    - field: database_active
+      type: Integer
+# define the operations for service, repositories and controller
+# the sentence SELECT *, DELETE not should be used
+# the fields in the SELECT SHOULD BE continues, example SELECT user_id,user_name,user_status FROM documentation.TEMPLATES
+queries:
+     - name: create
+       sentence: INSERT INTO DBS(database_alias,database_url,database_user,database_pass) VALUES(:alias,:url,:user,:pass)
+       output: Dbs
+     - name: find
+       sentence: SELECT database_id,database_alias,database_url,database_user,database_pass,database_execution,database_active DBS 
+       output: List<Dbs>
+     - name: show
+       sentence: SELECT database_id,database_alias,database_url,database_user,database_pass,database_execution,database_active DBS WHERE database_id= :id
+       output: Dbs
+     - name: findByAlias
+       sentence: SELECT database_id,database_alias,database_url,database_user,database_pass,database_execution,database_active DBS WHERE database_alias= :alias
+       output: Dbs   
+     - name: update
+       sentence: UPDATE DBS SET database_alias= :alias,database_user= :url,database_user= :user,database_pass= :pass,database_active= :active WHERE database_id= :id
+       output: Integer
+     - name: delete
+       sentence: UPDATE DBS SET database_active = 0 where database_id = :id
+       output: Integer
+     - name: execution
+       sentence: UPDATE DBS SET database_execution= :exec  where database_id = :id
+       output: Integer
+       

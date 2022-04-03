@@ -1,0 +1,60 @@
+# define the general configuration
+configuration:
+  outputdir: C:\Users\Fernando\Desktop\tesr
+  domain: com.vyfido.dbfit
+  name: TestCases
+# describe the information the table, for domain and mapper
+# the type of data use the java type  
+domain:
+  fields: 
+    - field: execution
+      type:  Integer
+    - field: case_id
+      type: Long
+    - field: case_name
+      type: String
+    - field: case_db_id
+      type: Long
+    - field: case_sentence
+      type: String
+    - field: case_params
+      type: Integer
+    - field: case_group_name
+      type: String
+    - field: case_group_step
+      type: Integer
+    - field: case_expected_result
+      type: String
+    - field: case_expected_error
+      type: Integer
+    - field: case_exec_result
+      type: String
+    - field: case_exec_error
+      type: Integer
+    - field: case_exec_message
+      type: String    
+# define the operations for service, repositories and controller
+# the sentence SELECT *, DELETE not should be used
+# the fields in the SELECT SHOULD BE continues, example SELECT user_id,user_name,user_status FROM documentation.TEMPLATES
+queries:
+     - name: create
+       sentence: INSERT INTO CASES(case_execution,case_db,case_name,case_sentence,case_params,case_expected_result,case_expected_error) VALUES(:execution,:namedb,:namecase,:sentence,:params,:expcrest,:expceror)
+       output: Testcases
+     - name: createWithGroup
+       sentence: INSERT INTO CASES(case_execution,case_db,case_name,case_sentence,case_params,case_expected_result,case_expected_error,case_group,case_group_step) VALUES(:execution,:namedb,:namecase,:sentence,:params,:expcrest,:expcerror,:group,:order)
+       output: Testcases
+     - name: findByExecution
+       sentence: SELECT case_execution,case_db,case_name,case_sentence,case_params,case_expected_result,case_expected_error,case_group,case_group_step,case_id,case_exec_result,case_exec_error,case_exec_message FROM CASES WHERE case_execution= :execution 
+       output: List<Testcases>
+     - name: findByDatabase
+       sentence: SELECT case_execution,case_db,case_name,case_sentence,case_params,case_expected_result,case_expected_error,case_group,case_group_step,case_id,case_exec_result,case_exec_error,case_exec_message,case_db_id FROM CASES WHERE case_db_id= :database 
+       output: List<TestCases>
+     - name: findById
+       sentence: SELECT case_execution,case_db,case_name,case_sentence,case_params,case_expected_result,case_expected_error,case_group,case_group_step,case_id,case_exec_result,case_exec_error,case_exec_message,case_db_id FROM CASES WHERE case_id= :id
+       output: TestCases
+     - name: saveResults
+       sentence: UPDATE CASES SET case_exec_result= :result,case_exec_error= :error,case_message= :message WHERE case_id= :id
+       output: Integer
+     - name: saveDatabase
+       sentence: UPDATE CASES SET case_db_id= :database WHERE case_id= :id
+       output: Integer

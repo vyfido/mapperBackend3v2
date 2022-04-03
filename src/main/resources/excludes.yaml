@@ -1,0 +1,36 @@
+# define the general configuration
+configuration:
+  outputdir: C:\Users\Fernando\Desktop\tesr
+  domain: com.vyfido.trivial.user
+  name: Excludes
+# describe the information the table, for domain and mapper
+# the type of data use the java type  
+domain:
+  fields: 
+    - field: exclude_id
+      type: Long
+    - field: exclude_url
+      type: String
+    - field: exclude_description
+      type: String
+    - field: exclude_state
+      type: Integer
+# define the operations for service, repositories and controller
+# the sentence SELECT *, DELETE not should be used
+# the fields in the SELECT SHOULD BE continues, example SELECT user_id,user_name,user_status FROM documentation.TEMPLATES
+queries:
+     - name: create
+       sentence: INSERT INTO usermanagement.EXCLUDES(exclude_url,exclude_description) VALUES(:url,:description)
+       output: Excludes
+     - name: find
+       sentence: SELECT exclude_id,exclude_url,exclude_description,exclude_state usermanagement.EXCLUDES where exclude_state= :active      
+       output: List<Excludes>
+     - name: show
+       sentence: SELECT exclude_id,exclude_url,exclude_description,exclude_state FROM usermanagement.EXCLUDES where exclude_id= :id
+       output: Excludes
+     - name: update
+       sentence: UPDATE usermanagement.EXCLUDES SET exclude_url= :url,exclude_description= :description,exclude_state= :state where exclude_id= :id
+       output: Long
+     - name: delete
+       sentence: UPDATE usermanagement.EXCLUDES SET exclude_state = 0 where exclude_id = :id
+       output: Boolean

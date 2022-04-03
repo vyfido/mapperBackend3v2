@@ -1,0 +1,35 @@
+# define the general configuration
+configuration:
+  outputdir: C:\Users\Fernando\Desktop\tesr
+  domain: com.vyfido.dbfit
+  name: Logs
+# describe the information the table, for domain and mapper
+# the type of data use the java type  
+domain:
+  fields: 
+    - field: database
+      type: Long
+    - field: log_id
+      type: Long
+    - field: log_execution
+      type: Long  
+    - field: log_init_date
+      type: Timestamp
+    - field: log_end_date
+      type: Timestamp
+# define the operations for service, repositories and controller
+# the sentence SELECT *, DELETE not should be used
+# the fields in the SELECT SHOULD BE continues, example SELECT user_id,user_name,user_status FROM documentation.TEMPLATES
+queries:
+     - name: create
+       sentence: INSERT INTO LOGS(db_iddb,log_execution,log_init_date) VALUES(:database,:execution,:initial)
+       output: Logs
+     - name: findByDatabase
+       sentence: SELECT db_iddb,log_id,log_execution,log_init_date,log_end_date FROM LOGS where db_iddb = :database
+       output: List<Logs>
+     - name: findById
+       sentence: SELECT db_iddb,log_id,log_execution,log_init_date,log_end_date FROM LOGS where log_id = :id
+       output: Logs  
+     - name: endingExecution
+       sentence: UPDATE LOGS SET log_init_time= :time WHERE log_id = :id
+       output: Integer
